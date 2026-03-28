@@ -375,6 +375,14 @@ body {
   transition: background 0.15s;
 }
 
+/* Inline SVG transport icons (avoids iOS emoji-style glyphs for ⏮⏭⏸ vs ▶). */
+.btn-icon__svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+  flex-shrink: 0;
+}
+
 /* Larger transport controls for easier tapping (e.g. older adults). */
 .player-dock .btn-icon {
   width: 4rem;
