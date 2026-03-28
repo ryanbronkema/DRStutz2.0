@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Music</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <main id="main" class="app" aria-label="Music player">
+      <header class="top-bar">
+        <h1 class="top-bar__title">Reluctant Heroes</h1>
+      </header>
+
+      <div class="browser">
+        <div
+          class="tabs"
+          role="tablist"
+          aria-label="Choose album"
+          id="album-tabs"
+        ></div>
+
+        <!-- <div
+          class="download-bar"
+          role="group"
+          aria-label="Download albums as ZIP"
+        >
+          <button type="button" class="btn-dl" id="btn-download-album">
+            Download this album
+          </button>
+          <button
+            type="button"
+            class="btn-dl btn-dl--ghost"
+            id="btn-download-all"
+          >
+            Download everything
+          </button>
+        </div> -->
+        <p
+          class="download-status visually-hidden"
+          id="download-status"
+          aria-live="polite"
+        ></p>
+
+        <div
+          id="track-panel"
+          class="track-panel"
+          role="tabpanel"
+          aria-labelledby="album-tabs"
+        >
+          <ol class="track-list" id="track-list"></ol>
+        </div>
+      </div>
+
+      <footer
+        class="player-dock"
+        role="region"
+        aria-label="Audio player"
+        id="player-bar"
+      >
+        <img
+          class="player-dock__art"
+          id="player-art"
+          src="assets/art/idle.svg"
+          alt=""
+          width="76"
+          height="76"
+          decoding="async"
+        />
+        <div class="player-dock__meta">
+          <div class="player-dock__title" id="player-title">—</div>
+          <div class="player-dock__album" id="player-album"></div>
+        </div>
+        <div class="player-dock__seek">
+          <span class="player-time" id="time-current">0:00</span>
+          <input
+            type="range"
+            class="seek"
+            id="seek"
+            min="0"
+            max="1000"
+            value="0"
+            aria-label="Seek"
+          />
+          <span class="player-time" id="time-duration">0:00</span>
+        </div>
+        <div class="player-dock__controls">
+          <button
+            type="button"
+            class="btn-icon"
+            id="btn-prev"
+            aria-label="Previous track"
+          >
+            <span aria-hidden="true">⏮</span>
+          </button>
+          <button
+            type="button"
+            class="btn-icon btn-icon--primary"
+            id="btn-play"
+            aria-label="Play"
+          >
+            <span class="play-icon" aria-hidden="true">▶</span>
+            <span class="pause-icon hidden" aria-hidden="true">⏸</span>
+          </button>
+          <button
+            type="button"
+            class="btn-icon"
+            id="btn-next"
+            aria-label="Next track"
+          >
+            <span aria-hidden="true">⏭</span>
+          </button>
+        </div>
+      </footer>
+    </main>
+
+    <audio id="audio" preload="metadata" playsinline></audio>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
