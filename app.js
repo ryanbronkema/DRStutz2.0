@@ -53,8 +53,8 @@ const albums = [
   },
   {
     id: "a2",
-    title: "Album 2",
-    artwork: "assets/art/album2.svg",
+    title: "It's Not Magic, It's Dex",
+    artwork: "assets/art/its-not-magic.png",
     tracks: [
       {
         title: "Just Another Morning",
