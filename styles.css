@@ -495,3 +495,101 @@ body {
     padding-top: 0.15rem;
   }
 }
+
+/*
+ * Short viewports: iPhone SE (568px), browser chrome, landscape, split-screen.
+ * Frees vertical space for the scrollable track list without breaking tap targets.
+ */
+@media (max-height: 640px) {
+  html {
+    font-size: 100%;
+  }
+
+  .app {
+    padding: 0.35rem clamp(0.4rem, 2vw, 0.65rem);
+    padding-bottom: max(0.35rem, env(safe-area-inset-bottom));
+  }
+
+  .top-bar {
+    padding: 0 0 0.2rem;
+  }
+
+  .top-bar__title {
+    font-size: clamp(1rem, 3.8vmin, 1.28rem);
+  }
+
+  .browser {
+    gap: 0.3rem;
+  }
+
+  .tabs {
+    gap: 0.3rem;
+  }
+
+  .tab {
+    gap: 0.22rem;
+    padding: 0.3rem 0.3rem 0.35rem;
+  }
+
+  .tab__cover {
+    max-width: 3.35rem;
+  }
+
+  .tab__title {
+    font-size: clamp(0.65rem, 2.4vmin, 0.82rem);
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
+  .track-row {
+    min-height: 2.45rem;
+    padding: 0.32rem 0.45rem;
+    font-size: clamp(0.8rem, 2.4vmin, 0.95rem);
+  }
+
+  .track-num {
+    padding-top: 0.12em;
+  }
+
+  .player-dock {
+    margin-top: 0.25rem;
+    padding: 0.3rem 0.2rem 0;
+    gap: 0.28rem 0.45rem;
+  }
+
+  .player-dock__title {
+    font-size: clamp(0.82rem, 2.4vmin, 0.95rem);
+  }
+
+  .player-dock__art {
+    width: 64px;
+    height: 64px;
+  }
+
+  .player-dock .btn-icon {
+    width: 3.15rem;
+    height: 3.15rem;
+    min-width: 3.15rem;
+    min-height: 3.15rem;
+    font-size: 1.2rem;
+    border-radius: 9px;
+  }
+
+  .player-dock .btn-icon--primary {
+    width: 3.45rem;
+    height: 3.45rem;
+    min-width: 3.45rem;
+    min-height: 3.45rem;
+    font-size: 1.3rem;
+    border-radius: 10px;
+  }
+
+  .player-dock__seek {
+    gap: 0.35rem;
+  }
+
+  /* Stacked mobile player (see max-width: 640px): keep gaps tight */
+  .player-dock__controls {
+    padding-top: 0.05rem;
+  }
+}
