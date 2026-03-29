@@ -118,6 +118,8 @@ body {
   color: var(--text);
   font: inherit;
   cursor: pointer;
+  /* Clip descendants; avoids stray hit areas from line-clamp/flex on iOS. */
+  overflow: hidden;
   transition:
     background 0.15s,
     border-color 0.15s;
@@ -148,6 +150,8 @@ body {
   background: var(--bg);
   border: 1px solid var(--border);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  /* iOS Safari can drop button clicks when the target is the inner <img>. */
+  pointer-events: none;
 }
 
 .tab__title {
@@ -162,6 +166,7 @@ body {
   overflow: hidden;
   word-break: break-word;
   width: 100%;
+  pointer-events: none;
 }
 
 .download-bar {
