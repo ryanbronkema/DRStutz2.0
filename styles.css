@@ -456,38 +456,39 @@ body {
   cursor: pointer;
 }
 
-/* Stack player on small screens: cover + meta on top, seek, then controls */
+/* Mobile: title only (no cover art or album line), then seek, then controls */
 @media (max-width: 640px) {
   .player-dock {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
-    gap: 0.45rem 0.55rem;
-    align-items: center;
+    gap: 0.45rem 0;
+    align-items: stretch;
   }
 
   .player-dock__art {
-    grid-column: 1;
-    grid-row: 1;
-    align-self: center;
-    width: 72px;
-    height: 72px;
+    display: none;
+  }
+
+  .player-dock__album {
+    display: none;
   }
 
   .player-dock__meta {
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 1;
-    align-self: center;
+    align-self: start;
+    min-width: 0;
     padding-bottom: 0;
   }
 
   .player-dock__seek {
-    grid-column: 1 / -1;
+    grid-column: 1;
     grid-row: 2;
     width: 100%;
   }
 
   .player-dock__controls {
-    grid-column: 1 / -1;
+    grid-column: 1;
     grid-row: 3;
     justify-content: center;
     width: 100%;
