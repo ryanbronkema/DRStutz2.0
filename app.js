@@ -466,8 +466,14 @@ audio.addEventListener("timeupdate", syncSeekFromAudio);
 audio.addEventListener("loadedmetadata", syncSeekFromAudio);
 
 btnPlay.addEventListener("click", () => {
-  if (!nowPlaying && albums[0]?.tracks[0]) {
-    playTrack(0, 0);
+  const album = getAlbum(selectedAlbumIndex);
+  const first = album?.tracks[0];
+  const needsAlbumStart =
+    !nowPlaying ||
+    nowPlaying.albumIndex !== selectedAlbumIndex ||
+    !album?.tracks[nowPlaying.trackIndex];
+  if (needsAlbumStart) {
+    if (first) playTrack(selectedAlbumIndex, 0);
     return;
   }
   if (audio.paused) audio.play().catch(() => {});
