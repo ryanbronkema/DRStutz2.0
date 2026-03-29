@@ -42,6 +42,7 @@ const albums = [
       {
         title: "Smoke and Mirrors",
         file: "assets/audio/album1/smoke-and-mirrors-v2.mp3",
+        cowrite: "Co-write with Mike Vilenski",
       },
       { title: "Lifeline", file: "assets/audio/album1/lifeline-v2.mp3" },
       {
@@ -111,6 +112,7 @@ const albums = [
       {
         title: "That's the Shape I'm In",
         file: "assets/audio/album3/shape-im-in-v1.mp3",
+        cowrite: "Co-write with Brian Scott",
       },
     ],
   },
@@ -308,9 +310,15 @@ function renderTrackRows() {
       nowPlaying.trackIndex === trackIndex;
     if (isCurrent) btn.setAttribute("aria-current", "true");
 
+    const cowriteHtml = track.cowrite
+      ? `<span class="track-cowrite">${escapeHtml(track.cowrite)}</span>`
+      : "";
     btn.innerHTML = `
       <span class="track-num">${trackIndex + 1}</span>
-      <span class="track-title">${escapeHtml(track.title)}</span>
+      <span class="track-main">
+        <span class="track-title">${escapeHtml(track.title)}</span>
+        ${cowriteHtml}
+      </span>
     `;
     btn.addEventListener("click", () =>
       playTrack(selectedAlbumIndex, trackIndex),
