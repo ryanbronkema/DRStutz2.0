@@ -16,12 +16,14 @@
       </header>
 
       <div class="browser">
-        <div
-          class="tabs"
-          role="tablist"
-          aria-label="Choose album"
-          id="album-tabs"
-        ></div>
+        <div class="album-picker">
+          <label class="album-picker__label" for="album-select">Album</label>
+          <select
+            class="album-select"
+            id="album-select"
+            aria-label="Choose album"
+          ></select>
+        </div>
 
         <!-- <div
           class="download-bar"
@@ -48,8 +50,8 @@
         <div
           id="track-panel"
           class="track-panel"
-          role="tabpanel"
-          aria-labelledby="album-tabs"
+          role="region"
+          aria-label="Tracks"
         >
           <ol class="track-list" id="track-list"></ol>
         </div>
