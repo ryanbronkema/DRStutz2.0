@@ -142,8 +142,6 @@ body {
 
 .tab__cover {
   display: block;
-  width: 100%;
-  max-width: 4.35rem;
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 7px;
@@ -529,10 +527,6 @@ body {
   .tab {
     gap: 0.22rem;
     padding: 0.3rem 0.3rem 0.35rem;
-  }
-
-  .tab__cover {
-    max-width: 3.35rem;
   }
 
   .tab__title {
