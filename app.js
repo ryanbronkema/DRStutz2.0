@@ -83,10 +83,10 @@ const albums = [
         title: "Maybe You'll See the Light",
         file: "assets/audio/album2/maybe-youll-see-the-light.mp3",
       },
-      {
+      /* {
         title: "Carolina in My Mind",
         file: "assets/audio/album2/carolina-in-my-mind.mp3",
-      },
+      }, */
     ],
   },
   {
