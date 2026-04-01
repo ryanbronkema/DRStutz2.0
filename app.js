@@ -119,6 +119,7 @@ const albums = [
 ];
 
 const audio = document.getElementById("audio");
+const albumTabs = document.getElementById("album-tabs");
 const albumSelect = document.getElementById("album-select");
 const trackList = document.getElementById("track-list");
 const btnDownloadAlbum = document.getElementById("btn-download-album");
@@ -127,9 +128,14 @@ const downloadStatus = document.getElementById("download-status");
 const btnPlay = document.getElementById("btn-play");
 const btnPrev = document.getElementById("btn-prev");
 const btnNext = document.getElementById("btn-next");
+const btnArtModal = document.getElementById("btn-art-modal");
 const playerArt = document.getElementById("player-art");
 const playerTitle = document.getElementById("player-title");
 const playerAlbum = document.getElementById("player-album");
+const artModal = document.getElementById("art-modal");
+const artModalImg = document.getElementById("art-modal-img");
+const artModalBackdrop = document.getElementById("art-modal-backdrop");
+const artModalClose = document.getElementById("art-modal-close");
 const seek = document.getElementById("seek");
 const timeCurrent = document.getElementById("time-current");
 const timeDuration = document.getElementById("time-duration");
@@ -173,6 +179,10 @@ function updatePlayerChrome() {
     playerAlbum.textContent = "";
     playerArt.src = "assets/art/idle.svg";
     playerArt.alt = "";
+    if (btnArtModal) {
+      btnArtModal.disabled = true;
+      btnArtModal.setAttribute("aria-label", "Open cover art");
+    }
     btnPrev.disabled = true;
     btnNext.disabled = true;
     return;
@@ -183,8 +193,26 @@ function updatePlayerChrome() {
   playerAlbum.textContent = album.title;
   playerArt.src = album.artwork;
   playerArt.alt = `${album.title} cover`;
+  if (btnArtModal) {
+    btnArtModal.disabled = false;
+    btnArtModal.setAttribute("aria-label", `Open ${album.title} cover art`);
+  }
   btnPrev.disabled = false;
   btnNext.disabled = false;
+}
+
+function openArtModal() {
+  if (!artModal || !artModalImg || !playerArt || !nowPlaying) return;
+  artModalImg.src = playerArt.src;
+  artModalImg.alt = playerArt.alt || `${playerAlbum.textContent} cover`;
+  artModal.classList.remove("hidden");
+  artModalClose?.focus();
+}
+
+function closeArtModal() {
+  if (!artModal || artModal.classList.contains("hidden")) return;
+  artModal.classList.add("hidden");
+  btnArtModal?.focus();
 }
 
 function updateDownloadAlbumButton() {
@@ -353,9 +381,65 @@ function renderAlbumOptions() {
   albumSelect.value = String(selectedAlbumIndex);
 }
 
+function renderAlbumTabs() {
+  if (!albumTabs) return;
+  albumTabs.innerHTML = "";
+  albums.forEach((album, index) => {
+    const tab = document.createElement("button");
+    tab.type = "button";
+    tab.className = "album-tab";
+    tab.role = "tab";
+    tab.id = `tab-${album.id}`;
+    tab.setAttribute("aria-controls", "track-panel");
+    tab.setAttribute(
+      "aria-selected",
+      index === selectedAlbumIndex ? "true" : "false",
+    );
+    tab.tabIndex = index === selectedAlbumIndex ? 0 : -1;
+    tab.setAttribute("aria-label", album.title);
+
+    const cover = document.createElement("img");
+    cover.className = "album-tab__cover";
+    cover.src = album.artwork;
+    cover.alt = "";
+    cover.width = 80;
+    cover.height = 80;
+    cover.decoding = "async";
+
+    const title = document.createElement("span");
+    title.className = "album-tab__title";
+    title.textContent = album.title;
+    title.setAttribute("aria-hidden", "true");
+
+    tab.appendChild(cover);
+    tab.appendChild(title);
+    tab.addEventListener("click", () => selectAlbum(index));
+    tab.addEventListener("keydown", (e) => onAlbumTabKeydown(e, index));
+    albumTabs.appendChild(tab);
+  });
+}
+
+function onAlbumTabKeydown(e, index) {
+  const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+  if (!keys.includes(e.key)) return;
+  e.preventDefault();
+  let next = index;
+  if (e.key === "ArrowRight") next = Math.min(albums.length - 1, index + 1);
+  if (e.key === "ArrowLeft") next = Math.max(0, index - 1);
+  if (e.key === "Home") next = 0;
+  if (e.key === "End") next = albums.length - 1;
+  selectAlbum(next);
+  const tabs = albumTabs?.querySelectorAll('[role="tab"]');
+  tabs?.[next]?.focus();
+}
+
 function selectAlbum(index) {
   selectedAlbumIndex = index;
   if (albumSelect) albumSelect.value = String(index);
+  albumTabs?.querySelectorAll('[role="tab"]').forEach((tab, i) => {
+    tab.setAttribute("aria-selected", i === index ? "true" : "false");
+    tab.tabIndex = i === index ? 0 : -1;
+  });
   updateDownloadAlbumButton();
   renderTrackRows();
 }
@@ -439,11 +523,17 @@ btnPlay.addEventListener("click", () => {
 
 btnPrev.addEventListener("click", () => playRelative(-1));
 btnNext.addEventListener("click", () => playRelative(1));
+btnArtModal?.addEventListener("click", openArtModal);
+artModalBackdrop?.addEventListener("click", closeArtModal);
+artModalClose?.addEventListener("click", closeArtModal);
 albumSelect?.addEventListener("change", () => {
   const next = Number.parseInt(albumSelect.value, 10);
   if (!Number.isNaN(next) && next >= 0 && next < albums.length) {
     selectAlbum(next);
   }
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeArtModal();
 });
 
 seek.addEventListener("input", () => {
@@ -464,6 +554,7 @@ seek.addEventListener("change", () => {
 });
 
 renderAlbumOptions();
+renderAlbumTabs();
 updateDownloadAlbumButton();
 renderTrackRows();
 updatePlayerChrome();

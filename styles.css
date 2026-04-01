@@ -98,11 +98,84 @@ body {
   gap: 0.45rem;
 }
 
+.album-tabs {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.45rem;
+}
+
+.album-tab {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.album-tab:hover {
+  background: var(--surface-hover);
+}
+
+.album-tab:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.album-tab[aria-selected="true"] {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+  color: var(--accent-strong);
+}
+
+.album-tab__cover {
+  display: block;
+  width: 100%;
+  max-width: 4.35rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 7px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.album-tab__title {
+  font-size: clamp(0.72rem, 2.7vmin, 0.9rem);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  width: 100%;
+  pointer-events: none;
+}
+
 .album-picker {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+}
+
+.album-picker--mobile {
+  display: none;
 }
 
 .album-picker__label {
@@ -283,16 +356,84 @@ body {
   min-height: 0;
 }
 
-.player-dock__art {
+.player-dock__art-btn {
   grid-column: 1;
   grid-row: 1 / -1;
   align-self: center;
   width: 76px;
   height: 76px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.player-dock__art-btn:disabled {
+  cursor: default;
+}
+
+.player-dock__art {
+  display: block;
+  width: 100%;
+  height: 100%;
   border-radius: 9px;
   object-fit: cover;
   background: var(--surface);
   border: 1px solid var(--border);
+}
+
+.art-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+}
+
+.art-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.art-modal__content {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 560px);
+  max-height: 88dvh;
+}
+
+.art-modal__img {
+  display: block;
+  width: 100%;
+  max-height: 88dvh;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.art-modal__close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(15, 17, 20, 0.82);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.art-modal__close:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .player-dock__meta {
@@ -415,17 +556,28 @@ body {
   cursor: pointer;
 }
 
-/* Mobile: title only (no cover art or album line), then seek, then controls */
+/* Mobile: keep cover visible unless viewport height is short */
 @media (max-width: 540px) {
-  .player-dock {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 0.45rem 0;
-    align-items: stretch;
+  .album-tabs {
+    display: none;
   }
 
-  .player-dock__art {
-    display: none;
+  .album-picker--mobile {
+    display: flex;
+  }
+
+  .player-dock {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0.45rem 0.55rem;
+    align-items: center;
+  }
+
+  .player-dock__art-btn {
+    grid-column: 1;
+    grid-row: 1;
+    width: 72px;
+    height: 72px;
   }
 
   .player-dock__album {
@@ -433,7 +585,7 @@ body {
   }
 
   .player-dock__meta {
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 1;
     align-self: start;
     min-width: 0;
@@ -516,8 +668,11 @@ body {
   }
 
   .player-dock__art {
-    width: 64px;
-    height: 64px;
+    display: none;
+  }
+
+  .player-dock__art-btn {
+    display: none;
   }
 
   .player-dock .btn-icon {

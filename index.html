@@ -16,7 +16,13 @@
       </header>
 
       <div class="browser">
-        <div class="album-picker">
+        <div
+          class="album-tabs"
+          role="tablist"
+          aria-label="Choose album"
+          id="album-tabs"
+        ></div>
+        <div class="album-picker album-picker--mobile">
           <label class="album-picker__label" for="album-select">Album</label>
           <select
             class="album-select"
@@ -63,15 +69,23 @@
         aria-label="Audio player"
         id="player-bar"
       >
-        <img
-          class="player-dock__art"
-          id="player-art"
-          src="assets/art/idle.svg"
-          alt=""
-          width="76"
-          height="76"
-          decoding="async"
-        />
+        <button
+          type="button"
+          class="player-dock__art-btn"
+          id="btn-art-modal"
+          aria-label="Open cover art"
+          disabled
+        >
+          <img
+            class="player-dock__art"
+            id="player-art"
+            src="assets/art/idle.svg"
+            alt=""
+            width="76"
+            height="76"
+            decoding="async"
+          />
+        </button>
         <div class="player-dock__meta">
           <div class="player-dock__title" id="player-title">—</div>
           <div class="player-dock__album" id="player-album"></div>
@@ -158,6 +172,26 @@
         </div>
       </footer>
     </main>
+
+    <div class="art-modal hidden" id="art-modal" role="dialog" aria-modal="true">
+      <button
+        type="button"
+        class="art-modal__backdrop"
+        id="art-modal-backdrop"
+        aria-label="Close cover art"
+      ></button>
+      <div class="art-modal__content">
+        <img class="art-modal__img" id="art-modal-img" src="" alt="" />
+        <button
+          type="button"
+          class="art-modal__close"
+          id="art-modal-close"
+          aria-label="Close cover art"
+        >
+          ×
+        </button>
+      </div>
+    </div>
 
     <audio id="audio" preload="metadata" playsinline></audio>
 
